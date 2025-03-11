@@ -41,19 +41,19 @@ class player:
         self.y += self.vy
 
     def BlockCollision(self, Bx, By):
-        if self.x + 30 > Bx and self.x < Bx + 50:
-            if self.y + 30 > By and self.y < By:
+        if self.x + 48 > Bx and self.x < Bx + 50:
+            if self.y + 48 > By and self.y < By:
                 # Player is touching the box from below
                 By += 2  # Move the box down
-            elif self.y < By +50 and self.y + 30 > By + 50:
+            elif self.y < By +50 and self.y + 48 > By + 50:
                 # Player is touching the box from above
                 By -= 2  # Move the box up
 
-        if self.y + 30 > By and self.y < By + 50:
-            if self.x + 30 > Bx and self.x < Bx:
+        if self.y + 48 > By and self.y < By + 50:
+            if self.x + 48 > Bx and self.x < Bx:
                 # Player is touching the box from the right
                 Bx += 2  # Move the box right
-            elif self.x < Bx + 50 and self.x + 30 > Bx + 50:
+            elif self.x < Bx + 50 and self.x + 48 > Bx + 50:
                 # Player is touching the box from the left
                 Bx -= 2  # Move the box left
 
