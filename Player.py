@@ -11,72 +11,73 @@ class player:
         self.y = 300
         self.vx = 0
         self.vy = 0
+        self.direction = W
+        self.moves = [True, True, True, True]
+        self.right = True
+        self.left = True
+        self.up = True
+        self.down = True
 
     def draw(self, screen):
-        pygame.draw.rect(screen, (150, 100, 100), (self.x, self.y, 30, 30))
+        pygame.draw.rect(screen, (150, 100, 100), (self.x, self.y, 50, 50))
     def move(self, keys, map):
         #print("true 2")
         #LEFT MOVEMENT
-        if keys[A] == True:
-            self.vx = 3
+        if keys[A] == True and self.moves[0] == True and self.right == True:
+            self.vx = 50
             self.direction = A
+            self.moves[0] = False
         #RIGHT MOVEMENT
-        elif keys[D] == True:
-            self.vx = -3
+        elif keys[D] == True and self.moves[1] == True and self.left == True:
+            self.vx = -50
             self.direction = D
+            self.moves[1] = False
         #TURN OFF X VELOCITY
         else:
             self.vx = 0
         
-        if keys[W] == True:
-            self.vy = -3
+        if keys[W] == True and self.moves[2] == True and self.up == True:
+            self.vy = -50
             self.direction = W
-        elif keys[S] == True:
-            self.vy = 3
+            self.moves[2] = False
+        elif keys[S] == True and self.moves[3] == True and self.down == True:
+            self.vy = 50
             self.direction = S
+            self.moves[3] = False
         else:
             self.vy = 0
 
         self.x += self.vx
         self.y += self.vy
 
-    def BlockCollision(self, Bx, By):
-        if self.x + 48 > Bx and self.x < Bx + 50:
-            if self.y + 48 > By and self.y < By:
-                # Player is touching the box from below
-                By += 2  # Move the box down
-            elif self.y < By +50 and self.y + 48 > By + 50:
-                # Player is touching the box from above
-                By -= 2  # Move the box up
-
-        if self.y + 48 > By and self.y < By + 50:
-            if self.x + 48 > Bx and self.x < Bx:
-                # Player is touching the box from the right
-                Bx += 2  # Move the box right
-            elif self.x < Bx + 50 and self.x + 48 > Bx + 50:
-                # Player is touching the box from the left
-                Bx -= 2  # Move the box left
-
 
 
     def collision(self, map):
 
-        if map[int(self.y / 50)][int((self.x + 30) / 50)] != 2:  # Check the right side of the player
-            self.x += 3  # Move right if there's no block
+        if map[int(self.y / 50)][int((self.x + 50) / 50)] == 2:  # Check the right side of the player
+            self.right = False
+        else: 
+            self.right = True
         
 
         # LEFT
-        if map[int(self.y / 50)][int(self.x / 50)] != 2:  # Check the left side of the player
-            self.x -= 3  # Move left if there's no block
+        if map[int(self.y / 50)][int((self.x - 50) / 50)] == 2:  # Check the left side of the player
+            self.left = False
+        else:
+            self.left = True
 
-        # DOWN
-        if map[int((self.y + 30) / 50)][int(self.x / 50)] != 2:  # Check the bottom side of the player
-            self.y += 3  # Move down if there's no block
+        #DOWN
+        if map[int((self.y + 50) / 50)][int(self.x / 50)] == 2:  # Check the bottom side of the player
+            self.down = False
+        else:
+            self.down = True
 
         # UP
-        if map[int(self.y / 50)][int(self.x / 50)] != 2:  # Check the top side of the player
-            self.y -= 3  # Move up if there's no block
-        
+        if map[int((self.y - 50) / 50)][int(self.x / 50)] == 2:  # Check the top side of the player
+            self.up = False
         else:
-            self.y += 0
-            self.x += 0
+            self.up = True
+        
+        # else:
+        #     self.y += 0
+        #     self.x += 0
