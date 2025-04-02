@@ -17,6 +17,7 @@ class player:
         self.left = True
         self.up = True
         self.down = True
+        self.isAlive = True
 
     def draw(self, screen):
         pygame.draw.rect(screen, (150, 100, 100), (self.x, self.y, 50, 50))
@@ -54,30 +55,34 @@ class player:
 
     def collision(self, map):
 
-        if map[int(self.y / 50)][int((self.x + 50) / 50)] == 2:  # Check the right side of the player
+        if map[int(self.y / 50)][int((self.x + 50) / 50)] == 2 or map[int(self.y / 50)][int((self.x + 50) / 50)] == 7:  # Check the right side of the player
             self.right = False
         else: 
             self.right = True
         
 
         # LEFT
-        if map[int(self.y / 50)][int((self.x - 50) / 50)] == 2:  # Check the left side of the player
+        if map[int(self.y / 50)][int((self.x - 50) / 50)] == 2 or map[int(self.y / 50)][int((self.x - 50) / 50)] == 7:  # Check the left side of the player
             self.left = False
         else:
             self.left = True
 
         #DOWN
-        if map[int((self.y + 50) / 50)][int(self.x / 50)] == 2:  # Check the bottom side of the player
+        if map[int((self.y + 50) / 50)][int(self.x / 50)] == 2 or map[int((self.y + 50) / 50)][int(self.x / 50)] == 7:  # Check the bottom side of the player
             self.down = False
         else:
             self.down = True
 
         # UP
-        if map[int((self.y - 50) / 50)][int(self.x / 50)] == 2:  # Check the top side of the player
+        if map[int((self.y - 50) / 50)][int(self.x / 50)] == 2 or map[int((self.y - 50) / 50)][int(self.x / 50)] == 7:  # Check the top side of the player
             self.up = False
         else:
             self.up = True
         
+        if map[int(self.y / 50)][int(self.x / 50)] == 4:  # Check the top side of the player
+            self.isAlive = False
+        else:
+            self.isAlive = True
         # else:
         #     self.y += 0
         #     self.x += 0
