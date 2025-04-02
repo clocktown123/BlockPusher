@@ -5,6 +5,9 @@ brick = pygame.image.load('DBrick.png')
 wall = pygame.image.load('Wall.png')
 Door = pygame.image.load('door.png')
 lava = pygame.image.load("Lava.png")
+holding = pygame.image.load("Holder.png")
+Button = pygame.image.load("button.png")
+glass = pygame.image.load("Glass.png")
 
 
 def MapF(screen, map, blockBeg):
@@ -18,4 +21,10 @@ def MapF(screen, map, blockBeg):
                 screen.blit(Door, (j * 50, i * 50), (0, 0, 50, 50))
             elif map[i][j] == 4:
                 screen.blit(lava, (j * 50, i * 50), (0, 0, 50, 50))
+            elif map[i][j] == 5:
+                screen.blit(holding, (j * 50, i * 50), (0, 0, 50, 50))
+            elif map[i][j] == 6:
+                screen.blit(Button, (j * 50, i * 50), (0, 0, 50, 50))
+            elif map[i][j] == 7:
+                screen.blit(glass, (j * 50, i * 50), (0, 0, 50, 50))
 
