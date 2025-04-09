@@ -244,6 +244,8 @@ while p1.isAlive == True: #GAME LOOP############################################
             b1[0].walk = False
             p1.x = 450
             p1.y = 100
+            b2[0].xPos = 200
+            b2[0].yPos = 400
             
 
     if mapNum == 5:
@@ -258,15 +260,6 @@ while p1.isAlive == True: #GAME LOOP############################################
         if all_collisions == False:  # If all were True, proceed
             nextLVL5 = True
 
-            
-
-    #print(functs)
-
-    # for m in b1:
-    #     for i in range(12):
-    #         for j in range(12):
-    #             if map4[i][j] == 7 and m.Button == True:
-    #                 map4[i][j] = 1
 
     if mapNum == 4:
         for m in b1:
@@ -290,7 +283,8 @@ while p1.isAlive == True: #GAME LOOP############################################
         for m in b2:
             m.PlayerCollision(p1)
 
-    #print(b1[0].Button)
+    print(mapNum)
+    print(b1[0].Button)
                 
     #print(p1.direction)
     
