@@ -7,7 +7,7 @@ Ground1 = pygame.image.load('Ground1.png')
 Lm = pygame.image.load('LandMine.png')
 
 wall = pygame.image.load('Wall.png')
-Door = pygame.image.load('door.png')
+Door = pygame.image.load('MineEntrance.png')
 water = pygame.image.load("Water2.png")
 holding = pygame.image.load("Holder.png")
 Button = pygame.image.load("button.png")
