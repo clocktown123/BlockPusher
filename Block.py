@@ -1,6 +1,7 @@
 import pygame
 
-Pblock = pygame.image.load('Block.png')
+Pblock = pygame.image.load('Barrel.png')
+Tumbleweed = pygame.image.load('Tumble.png')
 
 class block:
     def __init__(self, x, y):
@@ -123,8 +124,7 @@ class Farblock:
 
 
     def draw(self, screen):
-        #screen.blit(Pblock, (self.xPos, self.yPos))
-        pygame.draw.rect(screen, (200, 200, 200), (self.xPos, self.yPos, 50, 50))
+        screen.blit(Tumbleweed, (self.xPos, self.yPos))
 
     def move(self):
         self.xPos += self.vx
