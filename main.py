@@ -32,6 +32,12 @@ ticker = 0
 
 mapNum = 1
 
+state = 1
+
+startButton = False
+Tutorial = False
+Back = False
+
 
 nextLVL = False
 nextLVL2 = False
@@ -114,13 +120,15 @@ blockBag = []
 
 
 text_font = pygame.font.SysFont("Sans", 30, bold = True)
+smol_text_font = pygame.font.SysFont("Sans", 20, bold = True)
 
 def draw_text(text, font, text_col, tx, ty):
     img = font.render(text, True, text_col)
     screen.blit(img, (tx, ty))
 
+gameover = False
 
-while p1.isAlive == True: #GAME LOOP######################################################
+while gameover == False: #GAME LOOP######################################################
     clock.tick(60) # fps
     ticker+=1
     #input section--------------------------------------------------
@@ -156,6 +164,14 @@ while p1.isAlive == True: #GAME LOOP############################################
         if event.key == pygame.K_DOWN:
             keys[S] = False
             p1.moves[3] = True
+
+    if event.type == pygame.MOUSEMOTION:
+        mousePos = event.pos
+
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        mouseDown = True
+    if event.type == pygame.MOUSEBUTTONUP:
+        mouseDown = False
 
     #physics section----------------------------------------------------------
 
@@ -315,42 +331,107 @@ while p1.isAlive == True: #GAME LOOP############################################
         p1.move(keys, map4)
     elif mapNum == 5:
         p1.move(keys, map5)
+    
+    #button collision---------------------------------------------------------------------------------
 
+    if p1.isAlive == False:
+        state = 1
 
-        #render section ---------------------------------------------------
-    screen.fill((230,100,100))# Clear the screen pink
-
-    if mapNum == 1:
-        MapF(screen, map, blockBag)
+    if state == 1:
+        if mousePos[0]>300 and mousePos[0]<500 and mousePos[1]>300 and mousePos[1]<450:
+            startButton = True
+        else:
+            startButton = False
         
-    if mapNum == 2:
-        MapF(screen, map2, blockBag)
+        if mousePos[0]>100 and mousePos[0]<300 and mousePos[1]>300 and mousePos[1]<450:
+            Tutorial = True
+        else:
+            Tutorial = False
 
-    if mapNum == 3:
-        MapF(screen, map3, blockBag)
-    
-    if mapNum == 4:
-        MapF(screen, map4, blockBag)
+        if startButton == True and mouseDown == True:
+            state = 2
+        if Tutorial == True and mouseDown == True:
+            state = 3
 
-    if mapNum == 5:
-        MapF(screen, map5, blockBag)
-    
-    if mapNum == 1 or mapNum == 2 or mapNum == 4:
-        for i in range(len(b1)):
-            b1[i].draw(screen)
+    if state == 3:
 
-    if mapNum == 3:
-        for i in b2:
-            i.draw(screen)
+        if mousePos[0]>200 and mousePos[0]<400 and mousePos[1]>450 and mousePos[1]<600:
+            Back = True
+        else:
+            Back = False
 
-    if mapNum == 5:
-        b1[0].draw(screen)
-        for i in b2:
-            i.draw(screen)
+        if Back == True and mouseDown == True:
+            state = 1
+
+    #render section -------------------------------------------------------------------------------
+
+    if state == 1:
+        screen.fill((230, 100, 100))
+
+        if startButton == False:
+            pygame.draw.rect(screen, (100, 230, 100), (300, 300, 200, 150))
+        else:
+            pygame.draw.rect(screen, (200, 250, 200), (300, 300, 200, 150))
+
+        draw_text("Start", text_font, (0,0,0), 350, 350)
+
+        if Tutorial == False:
+            pygame.draw.rect(screen, (200, 20, 100), (100, 300, 200, 150))
+        else:
+            pygame.draw.rect(screen, (220, 20, 200), (100, 300, 200, 150))
+        
+        draw_text("Tutorial", text_font, (0,0,0), 150, 350)
+
+        
+    elif state == 2:
+        screen.fill((230,100,100))# Clear the screen pink
+
+        if mapNum == 1:
+            MapF(screen, map, blockBag)
+            
+        if mapNum == 2:
+            MapF(screen, map2, blockBag)
+
+        if mapNum == 3:
+            MapF(screen, map3, blockBag)
+        
+        if mapNum == 4:
+            MapF(screen, map4, blockBag)
+
+        if mapNum == 5:
+            MapF(screen, map5, blockBag)
+        
+        if mapNum == 1 or mapNum == 2 or mapNum == 4:
+            for i in range(len(b1)):
+                b1[i].draw(screen)
+
+        if mapNum == 3:
+            for i in b2:
+                i.draw(screen)
+
+        if mapNum == 5:
+            b1[0].draw(screen)
+            for i in b2:
+                i.draw(screen)
 
 
-    p1.draw(screen)
-    
+        p1.draw(screen)
+
+    elif state == 3:
+        screen.fill((245, 245, 220))
+        
+        draw_text("push barrels into mine entrances", smol_text_font, (0,0,0), 20, 50)
+        draw_text("dodge landmines (those dark circles)", smol_text_font, (0,0,0), 20, 100)
+        draw_text("tumble weeds wont stop moving until they hit a wall", smol_text_font, (0,0,0), 20, 150)
+        draw_text("place barrels on red circles to open up areas", smol_text_font, (0,0,0), 20, 200)
+
+
+        if Back == False:
+            pygame.draw.rect(screen, (200, 20, 100), (200, 450, 200, 150))
+        else:
+            pygame.draw.rect(screen, (220, 20, 200), (200, 450, 200, 150))
+
+        draw_text("Back", text_font, (0,0,0), 250, 500)
         
 
     pygame.display.flip()#this actually puts the pixel on the screen
