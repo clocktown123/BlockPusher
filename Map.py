@@ -10,8 +10,9 @@ wall = pygame.image.load('Wall.png')
 Door = pygame.image.load('MineEntrance.png')
 water = pygame.image.load("Water2.png")
 holding = pygame.image.load("Holder.png")
-Button = pygame.image.load("button.png")
-glass = pygame.image.load("Glass.png")
+Button = pygame.image.load("switch.png")
+ExplosionWall = pygame.image.load("TNT.png")
+gholding = pygame.image.load("GHolder.png")
 
 
 def MapF(screen, map, blockBeg):
@@ -28,12 +29,17 @@ def MapF(screen, map, blockBeg):
                 screen.blit(wall, (j * 50, i * 50), (0, 0, 50, 50))
             elif map[i][j] == 3:
                 screen.blit(Door, (j * 50, i * 50), (0, 0, 50, 50))
+
             elif map[i][j] == 4:
                 screen.blit(Lm, (j * 50, i * 50), (0, 0, 50, 50))
             elif map[i][j] == 5:
                 screen.blit(holding, (j * 50, i * 50), (0, 0, 50, 50))
+
             elif map[i][j] == 6:
                 screen.blit(Button, (j * 50, i * 50), (0, 0, 50, 50))
             elif map[i][j] == 7:
-                screen.blit(glass, (j * 50, i * 50), (0, 0, 50, 50))
+                screen.blit(ExplosionWall, (j * 50, i * 50), (0, 0, 50, 50))
+            elif map[i][j] == 9:
+                screen.blit(gholding, (j * 50, i * 50), (0, 0, 50, 50))
 
+            
