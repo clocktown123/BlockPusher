@@ -28,6 +28,8 @@ mypos = 0
 mousePos = (mxpos, mypos)
 mouseDown = False
 
+reset = False
+
 ticker = 0
 
 mapNum = 1
@@ -38,6 +40,9 @@ startButton = False
 Tutorial = False
 Back = False
 
+explosion = pygame.image.load("Explosion.png")
+MainBG = pygame.image.load("MainMenu.png")
+TutBG = pygame.image.load("Tutorial.png")
 
 nextLVL = False
 nextLVL2 = False
@@ -87,8 +92,8 @@ map3 = [[2,2,2,2,2,2,2,2,2,2,2,2],
        [2,2,2,2,2,2,2,2,2,2,2,2]]
 
 map4 = [[2,2,2,2,2,2,2,2,2,2,2,2],
-        [2,6,8,1,1,1,7,1,1,1,1,2],
-        [2,1,1,1,1,1,7,1,1,3,8,2],
+        [2,1,8,1,1,1,7,1,1,1,1,2],
+        [2,1,6,1,1,1,7,1,1,3,8,2],
         [2,1,1,8,1,1,7,1,1,1,1,2],
         [2,1,1,1,1,1,7,7,7,7,7,2],
         [2,1,1,1,1,1,1,1,1,1,1,2],
@@ -113,7 +118,7 @@ map5 = [[2,2,2,2,2,2,2,2,2,2,2,2],
         [2,2,2,2,2,2,2,2,2,2,2,2]]
 
 
-
+Rticker = 0
 
 
 blockBag = []
@@ -202,6 +207,7 @@ while gameover == False: #GAME LOOP#############################################
     if mapNum == 1:
         all_collisions = True  # Assume all collisions are True at the start
         
+        
         for m in b1:
             m.NLCollision(map)
             if not m.NLCollision(map):  # If any collision is False, set the flag to False
@@ -212,6 +218,8 @@ while gameover == False: #GAME LOOP#############################################
             nextLVL = True
             p1.x = 100
             p1.y = 400
+            for i in b1:
+                i.showing_image = False
     if mapNum == 2:
         all_collisions = True  # Assume all collisions are True at the start
         
@@ -221,10 +229,27 @@ while gameover == False: #GAME LOOP#############################################
                 all_collisions = False
                 #break  # No need to check further if one collision fails
 
+        if reset == True:
+            for i in range(12):
+                for j in range(12):
+                    if map2[i][j] == 5:
+                        map2[i][j] = 4
+            p1.x = 100
+            p1.y = 400
+            b1[0].xPos = 450
+            b1[0].yPos = 100
+            b1[1].xPos = 100
+            b1[1].yPos = 450
+            for i in b1:
+                i.showing_image = False
+            state = 1
+
         if all_collisions:  # If all were True, proceed
             nextLVL2 = True
             p1.x = 100
             p1.y = 450
+            for i in b1:
+                i.showing_image = False
     if mapNum == 3:
         all_collisions = True  # Assume all collisions are True at the start
         
@@ -233,6 +258,19 @@ while gameover == False: #GAME LOOP#############################################
             if not m.NLCollision(map3):  # If any collision is False, set the flag to False
                 all_collisions = False
                 #break  # No need to check further if one collision fails
+        
+        if reset == True:
+            for i in range(12):
+                for j in range(12):
+                    if map3[i][j] == 5:
+                        map3[i][j] = 4
+            p1.x = 100
+            p1.y = 450
+            b2[0].xPos = 200
+            b2[0].yPos = 400
+            for i in b1:
+                i.showing_image = False
+            state = 1
 
         if all_collisions:  # If all were True, proceed
             nextLVL3 = True
@@ -244,6 +282,8 @@ while gameover == False: #GAME LOOP#############################################
             b1[1].yPos = 400
             for m in b1:
                 m.walk = False
+                m.showing_image = False
+            
     if mapNum == 4:
         all_collisions = True  # Assume all collisions are True at the start
         
@@ -251,6 +291,23 @@ while gameover == False: #GAME LOOP#############################################
             if m.NLCollision(map4) == True:  # If any collision is False, set the flag to False
                 all_collisions = False
                 #break  # No need to check further if one collision fails
+
+        if reset == True:
+            for i in range(12):
+                for j in range(12):
+                    if map4[i][j] == 5:
+                        map4[i][j] = 4
+
+            p1.x = 100
+            p1.y = 450
+            b1[0].xPos = 400
+            b1[0].yPos = 150
+            b1[1].xPos = 200
+            b1[1].yPos = 400
+            for m in b1:
+                m.walk = False
+                m.showing_image = False
+            state = 1
 
         if all_collisions == False:  # If all were True, proceed
             b1[0].Button = False
@@ -262,6 +319,8 @@ while gameover == False: #GAME LOOP#############################################
             p1.y = 100
             b2[0].xPos = 200
             b2[0].yPos = 400
+            for i in b1:
+                i.showing_image = False
             
 
     if mapNum == 5:
@@ -273,7 +332,28 @@ while gameover == False: #GAME LOOP#############################################
                 all_collisions = False
                 #break  # No need to check further if one collision fails
 
+        if reset == True:
+            for i in range(12):
+                for j in range(12):
+                    if map5[i][j] == 5:
+                        map5[i][j] = 4
+                    if map5[i][j] == 9:
+                        map5[i][j] = 7
+            b1[0].Button = False
+            b1[0].xPos = 450
+            b1[0].yPos = 200
+            b1[0].walk = False
+            p1.x = 450
+            p1.y = 100
+            b2[0].xPos = 200
+            b2[0].yPos = 400
+            for i in b1:
+                i.showing_image = False
+            state = 1
+
         if all_collisions == False:  # If all were True, proceed
+            for i in b1:
+                i.showing_image = False
             nextLVL5 = True
 
 
@@ -299,8 +379,8 @@ while gameover == False: #GAME LOOP#############################################
         for m in b2:
             m.PlayerCollision(p1)
 
-    print(mapNum)
-    print(b1[0].Button)
+    #print(mapNum)
+    # print(b1[0].Button)
                 
     #print(p1.direction)
     
@@ -335,7 +415,18 @@ while gameover == False: #GAME LOOP#############################################
     #button collision---------------------------------------------------------------------------------
 
     if p1.isAlive == False:
-        state = 1
+        reset = True
+    else:
+        reset = False
+
+
+            #p1.isAlive = True
+    
+    #print(mapNum)
+    #print("reset: ",reset)
+    #print("Alive: ",p1.isAlive)
+
+
 
     if state == 1:
         if mousePos[0]>300 and mousePos[0]<500 and mousePos[1]>300 and mousePos[1]<450:
@@ -367,6 +458,8 @@ while gameover == False: #GAME LOOP#############################################
 
     if state == 1:
         screen.fill((230, 100, 100))
+
+        screen.blit(MainBG, (0, 0))
 
         if startButton == False:
             pygame.draw.rect(screen, (100, 230, 100), (300, 300, 200, 150))
@@ -414,17 +507,26 @@ while gameover == False: #GAME LOOP#############################################
             for i in b2:
                 i.draw(screen)
 
+        current_time = pygame.time.get_ticks()
+        if mapNum == 1:
+            for i in b1:
+                i.ExplosionAni(screen, map, current_time)
+        elif mapNum == 2:
+            for i in b1:
+                i.ExplosionAni(screen, map2, current_time)
+        elif mapNum == 4:
+            for i in b1:
+                i.ExplosionAni(screen, map4, current_time)
+        elif mapNum == 5:
+            for i in b1:
+                i.ExplosionAni(screen, map5, current_time)
 
         p1.draw(screen)
 
     elif state == 3:
         screen.fill((245, 245, 220))
-        
-        draw_text("push barrels into mine entrances", smol_text_font, (0,0,0), 20, 50)
-        draw_text("dodge landmines (those dark circles)", smol_text_font, (0,0,0), 20, 100)
-        draw_text("tumble weeds wont stop moving until they hit a wall", smol_text_font, (0,0,0), 20, 150)
-        draw_text("place barrels on red circles to open up areas", smol_text_font, (0,0,0), 20, 200)
 
+        screen.blit(TutBG, (0, 0))
 
         if Back == False:
             pygame.draw.rect(screen, (200, 20, 100), (200, 450, 200, 150))
