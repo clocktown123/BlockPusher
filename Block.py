@@ -3,6 +3,9 @@ import pygame
 Pblock = pygame.image.load('Barrel.png')
 Tumbleweed = pygame.image.load('Tumble.png')
 
+explode = pygame.image.load("Explosion.png")
+CMine = pygame.image.load("CollapsedMine.png")
+
 class block:
     def __init__(self, x, y):
         self.xPos = x
@@ -15,6 +18,12 @@ class block:
         self.down = True
         self.walk = False
         self.Button = False
+        
+        self.showing_image = False
+        self.image_start_time = 0
+        self.image_stage = 0  # 0: nothing, 1: showing image1, 2: showing image2
+        self.image_played = False  # New flag to track if animation played while on tile 3
+
 
 
     def draw(self, screen):
@@ -89,7 +98,7 @@ class block:
             for j in range(12):
                 if mapnum[i][j] == 7 and self.Button == True:
                     self.Button = False
-                    mapnum[i][j] = 1
+                    mapnum[i][j] = 9
         
 
     def NLCollision(self, map):
@@ -108,6 +117,28 @@ class block:
             self.walk = False
             return False
         
+    def ExplosionAni(self, screen, map, current_time):
+
+        # Only trigger once per entry into a '3' tile
+        if map[int(self.yPos / 50)][int(self.xPos/ 50)] == 3:
+            if self.image_played == False and self.showing_image == False:
+                self.showing_image = True
+                self.image_start_time = current_time
+                self.image_played = True
+        else:
+            # Reset trigger when leaving the tile
+            self.image_played = False
+
+        # Handle image showing logic
+        if self.showing_image:
+            TimePassed = current_time - self.image_start_time
+
+            if TimePassed < 1000:
+                screen.blit(explode, (self.xPos, self.yPos))
+            elif TimePassed > 1000:
+                screen.blit(CMine, (self.xPos, self.yPos))
+
+
 
 class Farblock:
     def __init__(self, x, y):
@@ -189,11 +220,6 @@ class Farblock:
             self.up = False
         else:
             self.up = True
-        
-
-
-            
-        
 
     def NLCollision(self, map):
         #if map[int(self.yPos / 50)][int((self.xPos + 50) / 50)] == 3 or map[int(self.yPos / 50)][int((self.xPos - 50)/ 50)] == 3 or map[int((self.yPos + 50) / 50)][int(self.xPos / 50)] == 3 or map[int((self.yPos - 50) / 50)][int(self.xPos / 50)] == 3:
