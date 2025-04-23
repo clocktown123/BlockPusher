@@ -1,14 +1,21 @@
 import pygame
+from pygame import mixer
 import random
 from Map import MapF
 from Player import player
 from Block import block, Farblock
 
 pygame.init()
+mixer.init()
 pygame.display.set_caption("BlockPusher")
 screen = pygame.display.set_mode((600,600))
 clock = pygame.time.Clock()
 
+#Music & Sound Effects--------------------------------------------
+BGMusic = pygame.mixer.Sound("BlockPushMusic.mp3")
+Walking = pygame.mixer.Sound("BlockPushWalking.mp3")
+
+#Player & Block Instantiations-------------------------------------
 p1 = player()
 b1 = [block(100, 150),block(400, 400)]
 b2 = [Farblock(200, 400)]
@@ -18,8 +25,9 @@ A = 0
 D = 1
 W = 2
 S = 3
+R = 4
 
-keys = [False, False, False, False]
+keys = [False, False, False, False, False]
 
 
 mxpos = 0
@@ -133,6 +141,9 @@ def draw_text(text, font, text_col, tx, ty):
 
 gameover = False
 
+if gameover == False:
+    pygame.mixer.Sound.play(BGMusic, loops=-1)
+    BGMusic.set_volume(0.1)
 while gameover == False: #GAME LOOP######################################################
     clock.tick(60) # fps
     ticker+=1
@@ -140,43 +151,52 @@ while gameover == False: #GAME LOOP#############################################
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             gameover = True
-    if event.type == pygame.KEYDOWN:
-             
-        if event.key == pygame.K_RIGHT:
-            keys[A] = True
-        if event.key == pygame.K_LEFT:
-            keys[D] = True
-                #RowNum = 3
-        if event.key == pygame.K_UP:
-            keys[W] = True
-                #RowNum = 1
-        if event.key == pygame.K_DOWN:
-            keys[S] = True
-                #RowNum = 2
+        if event.type == pygame.KEYDOWN:
+                
+            if event.key == pygame.K_RIGHT:
+                keys[A] = True
+                pygame.mixer.Sound.play(Walking)
+                Walking.set_volume(0.05)
+            if event.key == pygame.K_LEFT:
+                keys[D] = True
+                pygame.mixer.Sound.play(Walking)
+                Walking.set_volume(0.05)
+            if event.key == pygame.K_UP:
+                keys[W] = True
+                pygame.mixer.Sound.play(Walking)
+                Walking.set_volume(0.05)
+            if event.key == pygame.K_DOWN:
+                keys[S] = True
+                pygame.mixer.Sound.play(Walking)
+                Walking.set_volume(0.05)
+            if event.key == pygame.K_r:
+                keys[R] = True
 
         
-    if event.type == pygame.KEYUP:
+        if event.type == pygame.KEYUP:
 
-        if event.key == pygame.K_RIGHT:
-            keys[A] = False
-            p1.moves[0] = True
-        if event.key == pygame.K_LEFT:
-            keys[D] = False
-            p1.moves[1] = True
-        if event.key == pygame.K_UP:
-            keys[W] = False
-            p1.moves[2] = True
-        if event.key == pygame.K_DOWN:
-            keys[S] = False
-            p1.moves[3] = True
+            if event.key == pygame.K_RIGHT:
+                keys[A] = False
+                p1.moves[0] = True
+            if event.key == pygame.K_LEFT:
+                keys[D] = False
+                p1.moves[1] = True
+            if event.key == pygame.K_UP:
+                keys[W] = False
+                p1.moves[2] = True
+            if event.key == pygame.K_DOWN:
+                keys[S] = False
+                p1.moves[3] = True
+            if event.key == pygame.K_r:
+                keys[R] = False
 
-    if event.type == pygame.MOUSEMOTION:
-        mousePos = event.pos
+        if event.type == pygame.MOUSEMOTION:
+            mousePos = event.pos
 
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        mouseDown = True
-    if event.type == pygame.MOUSEBUTTONUP:
-        mouseDown = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouseDown = True
+        if event.type == pygame.MOUSEBUTTONUP:
+            mouseDown = False
 
     #physics section----------------------------------------------------------
 
@@ -213,6 +233,18 @@ while gameover == False: #GAME LOOP#############################################
             if not m.NLCollision(map):  # If any collision is False, set the flag to False
                 all_collisions = False
                 #break  # No need to check further if one collision fails
+
+        if reset == True:
+            #print("test")
+            p1.x = 300
+            p1.y = 300
+            b1[0].xPos = 100
+            b1[0].yPos = 150
+            b1[1].xPos = 400
+            b1[1].yPos = 400
+            for i in b1:
+                i.showing_image = False
+            state = 1
 
         if all_collisions:  # If all were True, proceed
             nextLVL = True
@@ -414,7 +446,7 @@ while gameover == False: #GAME LOOP#############################################
     
     #button collision---------------------------------------------------------------------------------
 
-    if p1.isAlive == False:
+    if p1.isAlive == False or keys[R] == True:
         reset = True
     else:
         reset = False
