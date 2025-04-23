@@ -1,4 +1,7 @@
 import pygame
+from pygame import mixer
+
+mixer.init()
 
 A = 0
 D = 1
