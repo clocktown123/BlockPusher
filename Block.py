@@ -1,4 +1,10 @@
 import pygame
+from pygame import mixer
+
+mixer.init()
+ExplosionSF = pygame.mixer.Sound("BlockPushExplosion.mp3")
+LandMineClick = pygame.mixer.Sound("BlockPushLM.mp3")
+BlockColSF = pygame.mixer.Sound("POP.mp3")
 
 Pblock = pygame.image.load('Barrel.png')
 Tumbleweed = pygame.image.load('Tumble.png')
@@ -105,6 +111,9 @@ class block:
         #if map[int(self.yPos / 50)][int((self.xPos + 50) / 50)] == 3 or map[int(self.yPos / 50)][int((self.xPos - 50)/ 50)] == 3 or map[int((self.yPos + 50) / 50)][int(self.xPos / 50)] == 3 or map[int((self.yPos - 50) / 50)][int(self.xPos / 50)] == 3:
                  # Check and assign x and y position based on where the "3" block is
 
+        if map[int(self.yPos / 50)][int(self.xPos / 50)] == 4:
+            pygame.mixer.Sound.play(LandMineClick)
+            LandMineClick.set_volume(0.5)
         if map[int(self.yPos / 50)][int(self.xPos / 50)] == 4 or map[int(self.yPos / 50)][int(self.xPos / 50)] == 5:
             self.walk = True
             map[int(self.yPos / 50)][int(self.xPos / 50)] = 5
@@ -135,6 +144,8 @@ class block:
 
             if TimePassed < 1000:
                 screen.blit(explode, (self.xPos, self.yPos))
+                pygame.mixer.Sound.play(ExplosionSF)
+                ExplosionSF.set_volume(0.06)
             elif TimePassed > 1000:
                 screen.blit(CMine, (self.xPos, self.yPos))
 
@@ -152,6 +163,7 @@ class Farblock:
         self.down = True
         self.walk = False
         self.col = False
+        self.Playing = False
 
 
     def draw(self, screen):
@@ -164,6 +176,7 @@ class Farblock:
     def PlayerCollision(self, p1):
         # Check if player and block are colliding
         if p1.x + 50 > self.xPos and p1.x < self.xPos + 50 and p1.y + 50 > self.yPos and p1.y < self.yPos + 50 and self.walk == False:
+            pygame.mixer.Sound.play(BlockColSF)
             self.col = True
         if p1.direction == 2 and self.col == True:
             if self.up == True:
