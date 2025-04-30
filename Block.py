@@ -24,6 +24,7 @@ class block:
         self.down = True
         self.walk = False
         self.Button = False
+        self.PlaySound = False
         
         self.showing_image = False
         self.image_start_time = 0
@@ -42,6 +43,8 @@ class block:
 
     def Pcollision(self, p1):
         if p1.x + 50 > self.xPos and p1.x<self.xPos+50 and p1.y +50 > self.yPos and p1.y < self.yPos+50 and self.walk == False:
+                pygame.mixer.Sound.play(BlockColSF)
+                BlockColSF.set_volume(0.2)
                 if p1.direction == 2 and self.up == True:
                     self.yPos -= 50
                 elif p1.direction == 2 and self.up == False:
@@ -95,6 +98,10 @@ class block:
 
         if map[int(self.yPos / 50)][int(self.xPos/ 50)] == 6:
             self.Button = True
+            if self.PlaySound == False:
+                pygame.mixer.Sound.play(LandMineClick)
+                LandMineClick.set_volume(0.5)
+            self.PlaySound = True
         else:
             self.Button = False
         
@@ -103,6 +110,8 @@ class block:
         for i in range(12):
             for j in range(12):
                 if mapnum[i][j] == 7 and self.Button == True:
+                    pygame.mixer.Sound.play(ExplosionSF)
+                    ExplosionSF.set_volume(0.04)
                     self.Button = False
                     mapnum[i][j] = 9
         
@@ -145,7 +154,7 @@ class block:
             if TimePassed < 1000:
                 screen.blit(explode, (self.xPos, self.yPos))
                 pygame.mixer.Sound.play(ExplosionSF)
-                ExplosionSF.set_volume(0.06)
+                ExplosionSF.set_volume(0.04)
             elif TimePassed > 1000:
                 screen.blit(CMine, (self.xPos, self.yPos))
 
@@ -177,6 +186,7 @@ class Farblock:
         # Check if player and block are colliding
         if p1.x + 50 > self.xPos and p1.x < self.xPos + 50 and p1.y + 50 > self.yPos and p1.y < self.yPos + 50 and self.walk == False:
             pygame.mixer.Sound.play(BlockColSF)
+            BlockColSF.set_volume(0.2)
             self.col = True
         if p1.direction == 2 and self.col == True:
             if self.up == True:
