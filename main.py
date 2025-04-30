@@ -13,7 +13,7 @@ clock = pygame.time.Clock()
 
 #Music & Sound Effects--------------------------------------------
 BGMusic = pygame.mixer.Sound("BlockPushMusic.mp3")
-Walking = pygame.mixer.Sound("BlockPushWalking.mp3")
+Walking = pygame.mixer.Sound("BlockPushWalk.mp3")
 
 #Player & Block Instantiations-------------------------------------
 p1 = player()
@@ -156,19 +156,19 @@ while gameover == False: #GAME LOOP#############################################
             if event.key == pygame.K_RIGHT:
                 keys[A] = True
                 pygame.mixer.Sound.play(Walking)
-                Walking.set_volume(0.05)
+                Walking.set_volume(0.2)
             if event.key == pygame.K_LEFT:
                 keys[D] = True
                 pygame.mixer.Sound.play(Walking)
-                Walking.set_volume(0.05)
+                Walking.set_volume(0.2)
             if event.key == pygame.K_UP:
                 keys[W] = True
                 pygame.mixer.Sound.play(Walking)
-                Walking.set_volume(0.05)
+                Walking.set_volume(0.2)
             if event.key == pygame.K_DOWN:
                 keys[S] = True
                 pygame.mixer.Sound.play(Walking)
-                Walking.set_volume(0.05)
+                Walking.set_volume(0.2)
             if event.key == pygame.K_r:
                 keys[R] = True
 
@@ -236,6 +236,7 @@ while gameover == False: #GAME LOOP#############################################
 
         if reset == True:
             #print("test")
+
             p1.x = 300
             p1.y = 300
             b1[0].xPos = 100
@@ -244,6 +245,7 @@ while gameover == False: #GAME LOOP#############################################
             b1[1].yPos = 400
             for i in b1:
                 i.showing_image = False
+                i.PlaySound = False
             state = 1
 
         if all_collisions:  # If all were True, proceed
@@ -252,6 +254,7 @@ while gameover == False: #GAME LOOP#############################################
             p1.y = 400
             for i in b1:
                 i.showing_image = False
+                i.PlaySound = False
     if mapNum == 2:
         all_collisions = True  # Assume all collisions are True at the start
         
@@ -274,6 +277,7 @@ while gameover == False: #GAME LOOP#############################################
             b1[1].yPos = 450
             for i in b1:
                 i.showing_image = False
+                i.PlaySound = False
             state = 1
 
         if all_collisions:  # If all were True, proceed
@@ -282,6 +286,7 @@ while gameover == False: #GAME LOOP#############################################
             p1.y = 450
             for i in b1:
                 i.showing_image = False
+                i.PlaySound = False
     if mapNum == 3:
         all_collisions = True  # Assume all collisions are True at the start
         
@@ -302,6 +307,7 @@ while gameover == False: #GAME LOOP#############################################
             b2[0].yPos = 400
             for i in b1:
                 i.showing_image = False
+                i.PlaySound = False
             state = 1
 
         if all_collisions:  # If all were True, proceed
@@ -315,6 +321,7 @@ while gameover == False: #GAME LOOP#############################################
             for m in b1:
                 m.walk = False
                 m.showing_image = False
+                m.PlaySound = False
             
     if mapNum == 4:
         all_collisions = True  # Assume all collisions are True at the start
@@ -339,6 +346,7 @@ while gameover == False: #GAME LOOP#############################################
             for m in b1:
                 m.walk = False
                 m.showing_image = False
+                m.PlaySound = False
             state = 1
 
         if all_collisions == False:  # If all were True, proceed
@@ -353,6 +361,7 @@ while gameover == False: #GAME LOOP#############################################
             b2[0].yPos = 400
             for i in b1:
                 i.showing_image = False
+                i.PlaySound = False
             
 
     if mapNum == 5:
@@ -381,11 +390,13 @@ while gameover == False: #GAME LOOP#############################################
             b2[0].yPos = 400
             for i in b1:
                 i.showing_image = False
+                i.PlaySound = False
             state = 1
 
         if all_collisions == False:  # If all were True, proceed
             for i in b1:
                 i.showing_image = False
+                i.PlaySound = False
             nextLVL5 = True
 
 
