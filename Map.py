@@ -40,3 +40,5 @@ def MapF(screen, map, blockBeg):
                 screen.blit(ExplosionWall, (j * 50, i * 50), (0, 0, 50, 50))
             elif map[i][j] == 9:
                 screen.blit(gholding, (j * 50, i * 50), (0, 0, 50, 50))
+
+            
