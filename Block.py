@@ -5,8 +5,10 @@ mixer.init()
 ExplosionSF = pygame.mixer.Sound("BlockPushExplosion.mp3")
 LandMineClick = pygame.mixer.Sound("BlockPushLM.mp3")
 BlockColSF = pygame.mixer.Sound("POP.mp3")
+TumbleColSf = pygame.mixer.Sound("TumbleSound.mp3")
 
 Pblock = pygame.image.load('Barrel.png')
+DarkPBlock = pygame.image.load("DarkBarrel.png")
 Tumbleweed = pygame.image.load('Tumble.png')
 
 explode = pygame.image.load("Explosion.png")
@@ -31,10 +33,20 @@ class block:
         self.image_stage = 0  # 0: nothing, 1: showing image1, 2: showing image2
         self.image_played = False  # New flag to track if animation played while on tile 3
 
+        self.Wshowing_image = False
+        self.Wimage_start_time = 0
+        self.Wimage_stage = 0  # 0: nothing, 1: showing image1, 2: showing image2
+        self.Wimage_played = False  # New flag to track if animation played while on tile 3
+
+        self.dark = False
+
 
 
     def draw(self, screen):
-        screen.blit(Pblock, (self.xPos, self.yPos))
+        if self.dark == False:
+            screen.blit(Pblock, (self.xPos, self.yPos))
+        elif self.dark == True:
+            screen.blit(DarkPBlock, (self.xPos, self.yPos))
         #pygame.draw.rect(screen, (200, 200, 200), (self.xPos, self.yPos, 50, 50))
 
     def move(self):
@@ -106,14 +118,22 @@ class block:
             self.Button = False
         
 
-    def ButtonCollision(self, mapnum):
+    def ButtonCollision(self, screen, mapnum, current_time):
         for i in range(12):
             for j in range(12):
                 if mapnum[i][j] == 7 and self.Button == True:
-                    pygame.mixer.Sound.play(ExplosionSF)
-                    ExplosionSF.set_volume(0.04)
-                    self.Button = False
-                    mapnum[i][j] = 9
+                    if self.Wimage_played == False and self.Wshowing_image == False:
+                        self.Wshowing_image = True
+                        self.Wimage_start_time = current_time
+                    if self.Wshowing_image:
+                        WTimePassed = current_time - self.Wimage_start_time
+                        if WTimePassed < 1000:
+                            screen.blit(explode, (j * 50, i * 50))
+                            pygame.mixer.Sound.play(ExplosionSF)
+                            ExplosionSF.set_volume(0.04)
+                        else:
+                            self.Button = False
+                            mapnum[i][j] = 9
         
 
     def NLCollision(self, map):
@@ -123,14 +143,15 @@ class block:
         if map[int(self.yPos / 50)][int(self.xPos / 50)] == 4:
             pygame.mixer.Sound.play(LandMineClick)
             LandMineClick.set_volume(0.5)
+            self.dark = True
         if map[int(self.yPos / 50)][int(self.xPos / 50)] == 4 or map[int(self.yPos / 50)][int(self.xPos / 50)] == 5:
             self.walk = True
             map[int(self.yPos / 50)][int(self.xPos / 50)] = 5
             return True
         elif map[int(self.yPos / 50)][int(self.xPos/ 50)] == 3:
             self.walk = True
-            return True
-            
+            self.dark = False
+            return True   
         else:
             self.walk = False
             return False
@@ -157,6 +178,8 @@ class block:
                 ExplosionSF.set_volume(0.04)
             elif TimePassed > 1000:
                 screen.blit(CMine, (self.xPos, self.yPos))
+
+    
 
 
 
@@ -185,8 +208,8 @@ class Farblock:
     def PlayerCollision(self, p1):
         # Check if player and block are colliding
         if p1.x + 50 > self.xPos and p1.x < self.xPos + 50 and p1.y + 50 > self.yPos and p1.y < self.yPos + 50 and self.walk == False:
-            pygame.mixer.Sound.play(BlockColSF)
-            BlockColSF.set_volume(0.2)
+            pygame.mixer.Sound.play(TumbleColSf)
+            TumbleColSf.set_volume(0.5)
             self.col = True
         if p1.direction == 2 and self.col == True:
             if self.up == True:
